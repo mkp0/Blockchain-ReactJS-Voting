@@ -99,10 +99,18 @@ function App() {
     );
   } else {
     return (
-      <div>
+      <div
+        style={{
+          width: "80%",
+          margin: "auto",
+          marginTop: "5rem",
+        }}
+      >
         {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
         <h2>Your account is : {accounts}</h2>
+
         <Table candidates={candidates} />
+        <hr />
         <Form.Select
           fluid
           label="Type"
@@ -113,6 +121,7 @@ function App() {
             console.log(value);
           }}
         />
+        <hr />
         <Button primary onClick={tolockKrDiyaJye}>
           Vote
         </Button>
