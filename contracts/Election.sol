@@ -29,10 +29,10 @@ contract Election {
 
     function vote(uint256 _candidateId) public {
         if (voterMapping[msg.sender] != 0) {
-            candidates[voterMapping[msg.sender]].voteCount--;
+            candidates[voterMapping[msg.sender] - 1].voteCount--;
         }
         voterMapping[msg.sender] = _candidateId;
-        candidates[_candidateId].voteCount++;
+        candidates[_candidateId - 1].voteCount++;
     }
 
     // Constructor
