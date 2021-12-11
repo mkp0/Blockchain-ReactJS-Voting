@@ -10,7 +10,8 @@ contract Election {
     }
 
     //stroring and fetching candidate
-    mapping(uint256 => Candidate) public candidates;
+    mapping(address => uint256) public voterMapping;
+    Candidate[] public candidates;
     // candidate counts
     uint256 public candidateCount;
 
@@ -18,12 +19,24 @@ contract Election {
     function addCandidate(string memory _name) private {
         candidateCount++;
         // 0 because intital vote count of any candidate is 0
-        candidates[candidateCount] = Candidate(candidateCount, _name, 0);
+        // candidates[candidateCount] = Candidate(candidateCount, _name, 0);
+        candidates.push(Candidate(candidateCount, _name, 0));
+    }
+
+    function allCandidates() public view returns (Candidate[] memory) {
+        return candidates;
+    }
+
+    function vote(uint256 _candidateId) public {
+        if (voterMapping[msg.sender] != 0) {
+            candidates[voterMapping[msg.sender]].voteCount--;
+        }
+        voterMapping[msg.sender] = _candidateId;
+        candidates[_candidateId].voteCount++;
     }
 
     // Constructor
     // -> read candiate and store candidate
-    string public candidate;
 
     constructor() {
         addCandidate("Candidate 1");

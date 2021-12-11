@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import Election from "./contracts/Election.json";
 import getWeb3 from "./getWeb3";
 
 function App() {
-  const [storageValue, setStorageValue] = useState(undefined);
+  // const [storageValue, setStorageValue] = useState(undefined);
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
   const [contract, setContract] = useState(undefined);
+  const [candidates, setCandidates] = useState(undefined);
 
   useEffect(() => {
     const init = async () => {
@@ -16,9 +17,9 @@ function App() {
         const accounts = await web3.eth.getAccounts();
 
         const networkId = await web3.eth.net.getId();
-        const deployedNetwork = SimpleStorageContract.networks[networkId];
+        const deployedNetwork = Election.networks[networkId];
         const instance = new web3.eth.Contract(
-          SimpleStorageContract.abi,
+          Election.abi,
           deployedNetwork && deployedNetwork.address
         );
         setWeb3(web3);
@@ -37,11 +38,11 @@ function App() {
   useEffect(() => {
     const runExample = async () => {
       try {
-        await contract.methods.set(387).send({ from: accounts[0] });
-
-        const response = await contract.methods.get().call();
-
-        setStorageValue(response);
+        // await contract.methods.set(387).send({ from: accounts[0] });
+        // const response = await contract.methods.get().call();
+        // setStorageValue(response);
+        let x = await contract.methods.allCandidates().call();
+        setCandidates(x);
       } catch {
         alert(
           "No contract deployed or account error; please check that MetaMask is on the correct network, reset the account and reload page"
@@ -66,7 +67,8 @@ function App() {
   } else {
     return (
       <div>
-        <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1>
+        {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
+        <h2>Your account is : {accounts}</h2>
       </div>
     );
   }
